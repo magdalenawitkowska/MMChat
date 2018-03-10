@@ -1,0 +1,12 @@
+PODS:
+  - InputBarAccessoryView (1.4.4)
+
+DEPENDENCIES:
+  - InputBarAccessoryView
+
+SPEC CHECKSUMS:
+  InputBarAccessoryView: e23d856ae50163e84a7a7cee0ce53733321e5e65
+
+PODFILE CHECKSUM: 5ffea6f632adb7ce1719ba5fff1398868899bc8e
+
+COCOAPODS: 1.4.0
