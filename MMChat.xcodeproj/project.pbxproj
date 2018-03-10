@@ -16,6 +16,8 @@
 		227684B120532D7F000216BB /* BubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227684B020532D7F000216BB /* BubbleView.xib */; };
 		227684B320532D8B000216BB /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227684B220532D8B000216BB /* BubbleView.swift */; };
 		227684B7205341B1000216BB /* TailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227684B6205341B1000216BB /* TailView.swift */; };
+		227D320F2054675E00C927A4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D320E2054675E00C927A4 /* ChatViewController.swift */; };
+		227D3211205475C000C927A4 /* MMChatColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D3210205475C000C927A4 /* MMChatColors.swift */; };
 		9A39941E7E5F824DD74DAA1B /* Pods_MMChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2082ECA97FFA3AC68F83987C /* Pods_MMChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +46,8 @@
 		227684B020532D7F000216BB /* BubbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BubbleView.xib; sourceTree = "<group>"; };
 		227684B220532D8B000216BB /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		227684B6205341B1000216BB /* TailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TailView.swift; sourceTree = "<group>"; };
+		227D320E2054675E00C927A4 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		227D3210205475C000C927A4 /* MMChatColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMChatColors.swift; sourceTree = "<group>"; };
 		8D72C8466C32D31FAA33EF81 /* Pods-MMChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BD99FED17BE77855A220397D /* Pods-MMChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,6 +103,7 @@
 		2276848D20532CCD000216BB /* MMChat */ = {
 			isa = PBXGroup;
 			children = (
+				227D320E2054675E00C927A4 /* ChatViewController.swift */,
 				227684B420533808000216BB /* Helpers */,
 				227684AE20532D4C000216BB /* Components */,
 				2276848E20532CCD000216BB /* AppDelegate.swift */,
@@ -141,6 +146,7 @@
 		227684B420533808000216BB /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				227D3210205475C000C927A4 /* MMChatColors.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -323,8 +329,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				227684B320532D8B000216BB /* BubbleView.swift in Sources */,
+				227D3211205475C000C927A4 /* MMChatColors.swift in Sources */,
 				2276849120532CCD000216BB /* ViewController.swift in Sources */,
 				227684B7205341B1000216BB /* TailView.swift in Sources */,
+				227D320F2054675E00C927A4 /* ChatViewController.swift in Sources */,
 				2276848F20532CCD000216BB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
