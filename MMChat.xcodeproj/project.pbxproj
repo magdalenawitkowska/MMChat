@@ -22,6 +22,8 @@
 		227D321720547C0F00C927A4 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321620547C0F00C927A4 /* ChatViewModel.swift */; };
 		227D321920547ECD00C927A4 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321820547ECD00C927A4 /* Section.swift */; };
 		227D321B2054852800C927A4 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321A2054852800C927A4 /* MessageCell.swift */; };
+		227D321E205568E500C927A4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321D205568E500C927A4 /* HeaderView.swift */; };
+		227D322120556A2D00C927A4 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227D322020556A2D00C927A4 /* HeaderView.xib */; };
 		9A39941E7E5F824DD74DAA1B /* Pods_MMChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2082ECA97FFA3AC68F83987C /* Pods_MMChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +58,8 @@
 		227D321620547C0F00C927A4 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		227D321820547ECD00C927A4 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		227D321A2054852800C927A4 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		227D321D205568E500C927A4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		227D322020556A2D00C927A4 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		8D72C8466C32D31FAA33EF81 /* Pods-MMChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BD99FED17BE77855A220397D /* Pods-MMChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +143,7 @@
 		227684AE20532D4C000216BB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				227D321F205568EC00C927A4 /* HeaderView */,
 				227684B520534198000216BB /* TailView */,
 				227684AF20532D65000216BB /* BubbleView */,
 			);
@@ -193,6 +198,15 @@
 				227D321A2054852800C927A4 /* MessageCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		227D321F205568EC00C927A4 /* HeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				227D321D205568E500C927A4 /* HeaderView.swift */,
+				227D322020556A2D00C927A4 /* HeaderView.xib */,
+			);
+			path = HeaderView;
 			sourceTree = "<group>";
 		};
 		F14665F643014CF886BCAADB /* Frameworks */ = {
@@ -290,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2276849920532CCD000216BB /* LaunchScreen.storyboard in Resources */,
+				227D322120556A2D00C927A4 /* HeaderView.xib in Resources */,
 				2276849620532CCD000216BB /* Assets.xcassets in Resources */,
 				227684B120532D7F000216BB /* BubbleView.xib in Resources */,
 				2276849420532CCD000216BB /* Main.storyboard in Resources */,
@@ -379,6 +394,7 @@
 				2276849120532CCD000216BB /* ViewController.swift in Sources */,
 				227684B7205341B1000216BB /* TailView.swift in Sources */,
 				227D320F2054675E00C927A4 /* ChatViewController.swift in Sources */,
+				227D321E205568E500C927A4 /* HeaderView.swift in Sources */,
 				2276848F20532CCD000216BB /* AppDelegate.swift in Sources */,
 				227D321B2054852800C927A4 /* MessageCell.swift in Sources */,
 				227D321420547BFB00C927A4 /* Message.swift in Sources */,

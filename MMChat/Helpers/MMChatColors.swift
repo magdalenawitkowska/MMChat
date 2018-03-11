@@ -13,5 +13,5 @@ class MMChatColors {
     
     static let raspberryRed = UIColor(red: 250/255, green: 64/255, blue: 107/255, alpha: 1.0)
     static let lightGray = UIColor(red: 239/255, green: 237/255, blue: 237/255, alpha: 1.0)
-    static let textGray = UIColor(red: 171/255, green: 171/255, blue: 171/255, alpha: 1.0)
+    static let textGray = UIColor(red: 148/255, green: 148/255, blue: 148/255, alpha: 1.0)
 }

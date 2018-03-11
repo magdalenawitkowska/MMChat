@@ -43,6 +43,9 @@ class ChatViewController: UITableViewController {
         viewModel = ChatViewModel()
         disposeBag = DisposeBag()
         
+        let nib = UINib(nibName: "HeaderView", bundle: nil)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
+        
         setUpBindings()
     }
     
@@ -63,12 +66,22 @@ class ChatViewController: UITableViewController {
                 return cell
         })
         
+        
         dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.automatic, reloadAnimation: UITableViewRowAnimation.none, deleteAnimation: UITableViewRowAnimation.automatic)
         
         viewModel.dataSource.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let text = viewModel.getHeaderOfSection(sectionNumber: section) {
+            let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as! HeaderView
+            header.headerLabel.text = text
+            return header
+        } else {
+            return UIView()
+        }
     }
     
 }
