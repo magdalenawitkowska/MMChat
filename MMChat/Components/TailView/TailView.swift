@@ -14,7 +14,6 @@ class TailView: UIView {
     var color: UIColor!
     
     override func draw(_ rect: CGRect) {
-        super.draw(rect)
         
         let raspberryRed = UIColor.init(red: 250/255, green: 64/255, blue: 107/255, alpha: 1.0)
         

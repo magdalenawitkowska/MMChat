@@ -15,6 +15,7 @@ struct Message: IdentifiableType, Equatable {
     var sentByMe: Bool
     var date: Date
     var id: Int
+    var seen: Bool
     
     typealias Identity = Int
     var identity : Identity { return id }

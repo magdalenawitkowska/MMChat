@@ -26,11 +26,11 @@ class ChatViewModel {
     var dateFormatter = DateFormatter()
     
     init() {
-        let message1 = Message(text: "Hey Mario!", sentByMe: true, date: Date(), id: 0)
-        let message2 = Message(text: "Hey Madziu!", sentByMe: false, date: Date(), id: 1)
-        let section = Section(header: "Today", items: [message1, message2])
-        
-        dataSource.value = [section]
+//        let message1 = Message(text: "Hey Mario!", sentByMe: true, date: Date(), id: 0)
+//        let message2 = Message(text: "Hey Madziu!", sentByMe: false, date: Date(), id: 1)
+//        let section = Section(header: "Today", items: [message1, message2])
+//
+//        dataSource.value = [section]
         
         dateFormatter.dateStyle = DateFormatter.Style.short
         dateFormatter.timeStyle = DateFormatter.Style.short
@@ -41,8 +41,17 @@ class ChatViewModel {
     
     func appendNewMessage(text: String) {
         idCount += 1
-        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount)
-        dataSource.value[0].items.append(newMessage)
+        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount, seen: idCount % 2 == 0)
+        let newSection = Section(header: dateFormatter.string(from: newMessage.date), items: [newMessage])
+        if dataSource.value.count > 0 {
+            if var lastSection = dataSource.value.last, let lastMessage = lastSection.items.last {
+                if Date().timeIntervalSince(lastMessage.date) < 20 * 60 * 60 {
+                    dataSource.value[dataSource.value.count - 1].items.append(newMessage)
+                    return
+                }
+            }
+        }
+        dataSource.value.append(newSection)
     }
     
     func messageShouldHaveTail(indexPath: IndexPath) -> Bool {
@@ -58,8 +67,8 @@ class ChatViewModel {
     }
     
     func getHeaderOfSection(sectionNumber: Int) -> String? {
-        if let section = dataSource.value[safe: sectionNumber], let firstMessage = section.items[safe: 0] {
-            return dateFormatter.string(from: firstMessage.date)
+        if let section = dataSource.value[safe: sectionNumber] {
+            return section.header
         }
         return nil
     }

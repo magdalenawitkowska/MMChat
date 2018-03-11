@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Black</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Root View Controller-->
         <scene sceneID="DMy-lg-ZFF">
@@ -19,27 +24,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageCell" rowHeight="92" id="zAO-ns-Pug" customClass="MessageCell" customModule="MMChat" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="92"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageCell" rowHeight="68" id="zAO-ns-Pug" customClass="MessageCell" customModule="MMChat" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAO-ns-Pug" id="r3C-ot-Ue7">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F84-V6-1hy" customClass="BubbleView" customModule="MMChat" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✔️Read" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDm-Ia-3f7">
+                                            <rect key="frame" x="312.5" y="48.5" width="52.5" height="19.5"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="F84-V6-1hy" secondAttribute="bottom" id="LcD-m6-35t"/>
+                                        <constraint firstItem="MDm-Ia-3f7" firstAttribute="top" secondItem="F84-V6-1hy" secondAttribute="bottom" constant="2" id="IrE-cY-Ozp"/>
+                                        <constraint firstAttribute="bottom" secondItem="MDm-Ia-3f7" secondAttribute="bottom" id="KOb-z0-LZO"/>
                                         <constraint firstItem="F84-V6-1hy" firstAttribute="top" secondItem="r3C-ot-Ue7" secondAttribute="top" id="Q3i-cg-Yff"/>
                                         <constraint firstAttribute="trailing" secondItem="F84-V6-1hy" secondAttribute="trailing" id="QaD-GP-Jgq"/>
                                         <constraint firstItem="F84-V6-1hy" firstAttribute="leading" secondItem="r3C-ot-Ue7" secondAttribute="leading" id="TOn-Se-7aE"/>
+                                        <constraint firstItem="MDm-Ia-3f7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r3C-ot-Ue7" secondAttribute="leading" constant="20" symbolic="YES" id="Y9a-2b-lf6"/>
+                                        <constraint firstAttribute="trailing" secondItem="MDm-Ia-3f7" secondAttribute="trailing" constant="10" id="bxe-rK-SmL"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="bubbleView" destination="F84-V6-1hy" id="hxV-Dj-7QO"/>
+                                    <outlet property="readLabel" destination="MDm-Ia-3f7" id="mFK-fJ-hA7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

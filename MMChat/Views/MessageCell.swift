@@ -11,5 +11,6 @@ import UIKit
 
 class MessageCell: UITableViewCell {
     
+    @IBOutlet weak var readLabel: UILabel!
     @IBOutlet weak var bubbleView: BubbleView!
 }

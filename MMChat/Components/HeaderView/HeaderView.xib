@@ -21,19 +21,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLp-Do-cs8">
-                    <rect key="frame" x="165.5" y="5" width="43" height="16"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLp-Do-cs8">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                     <color key="textColor" red="0.58039215686274503" green="0.58039215686274503" blue="0.58039215686274503" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="HLp-Do-cs8" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="8yN-nz-Bgo"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="HLp-Do-cs8" secondAttribute="bottom" constant="5" id="MGc-cR-dLt"/>
-                <constraint firstItem="HLp-Do-cs8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TxD-cs-7vl"/>
-                <constraint firstItem="HLp-Do-cs8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="5" id="vUa-0e-PdO"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="HLp-Do-cs8" secondAttribute="bottom" id="2mG-0R-4RZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HLp-Do-cs8" secondAttribute="trailing" id="Bl8-G5-pVA"/>
+                <constraint firstItem="HLp-Do-cs8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="jj1-zK-tg3"/>
+                <constraint firstItem="HLp-Do-cs8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="yYa-El-dqV"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

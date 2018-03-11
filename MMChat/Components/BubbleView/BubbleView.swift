@@ -59,8 +59,9 @@ class BubbleView: UIView {
         rightTailView.color = backgroundColor
         leftTailView.color = backgroundColor
         
-        rightTailView.draw(rightTailView.frame)
-        leftTailView.draw(leftTailView.frame)
+        rightTailView.setNeedsDisplay()
+        leftTailView.setNeedsDisplay()
+        
         
         leftTailView.transform = CGAffineTransform(scaleX: -1, y: 1)
     }

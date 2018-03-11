@@ -46,6 +46,9 @@ class ChatViewController: UITableViewController {
         let nib = UINib(nibName: "HeaderView", bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 88.0
+        
         setUpBindings()
     }
     
@@ -63,11 +66,20 @@ class ChatViewController: UITableViewController {
                 
                 cell.bubbleView.configureBubbleView(text: message.text, backgroundColor: bubbleColor, textColor: bubbleTextColor, bubbleAlignment: align, showTail: self.viewModel.messageShouldHaveTail(indexPath: indexPath))
                 
+                cell.layoutIfNeeded()
+                
+                cell.readLabel.text = message.seen ? "✔️Read" : ""
+                
                 return cell
         })
         
-        
-        dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.automatic, reloadAnimation: UITableViewRowAnimation.none, deleteAnimation: UITableViewRowAnimation.automatic)
+
+        viewModel.dataSource.asObservable().map {
+            _ in CGPoint(x: 0, y: 20.0) }
+            .bind(to: tableView.rx.contentOffset)
+            .disposed(by: disposeBag)
+
+        dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.none, reloadAnimation: UITableViewRowAnimation.none, deleteAnimation: UITableViewRowAnimation.none)
         
         viewModel.dataSource.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -84,6 +96,10 @@ class ChatViewController: UITableViewController {
         }
     }
     
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 100
+//    }
+    
 }
 
 
@@ -92,22 +108,17 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     // MARK: - InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         
+        viewModel.appendNewMessage(text: text)
+        inputBar.inputTextView.text = String()
+        
         var lastSection = viewModel.dataSource.value.count - 1
         if var items = viewModel.dataSource.value[safe: lastSection] {
             var lastRow = items.items.count - 1
             
-            tableView.scrollToRow(at: IndexPath(row: lastRow, section: lastSection), at: UITableViewScrollPosition.bottom, animated: true)
+            DispatchQueue.main.async {
+                self.tableView.scrollToRow(at: IndexPath(row: lastRow, section: lastSection), at: UITableViewScrollPosition.bottom, animated: false)
+            }
+
         }
-        
-        viewModel.appendNewMessage(text: text)
-        inputBar.inputTextView.text = String()
-        
-        
-        
-        
-        
-       // let indexPath = IndexPath(row: viewModel.messages.count - 1, section: 0)
-//        tableView.insertRows(at: [indexPath], with: .automatic)
-       // tableView.scro
     }
 }
