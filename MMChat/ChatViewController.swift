@@ -13,6 +13,13 @@ import RxDataSources
 import RxSwift
 import RxCocoa
 
+extension UIApplication {
+    var statusBarView: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
+}
+
+
 class ChatViewController: UITableViewController {
     
     var viewModel: ChatViewModel!
@@ -43,13 +50,24 @@ class ChatViewController: UITableViewController {
         viewModel = ChatViewModel()
         disposeBag = DisposeBag()
         
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        UIApplication.shared.statusBarView?.backgroundColor = .white
+        
         let nib = UINib(nibName: "HeaderView", bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
         
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 88.0
         
+        self.tableView.scrollsToTop = false
+        
         setUpBindings()
+        
+        self.title = "👩"
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "🔄", style: UIBarButtonItemStyle.plain, target: self, action: #selector(switchUser))
     }
     
     func setUpBindings() {
@@ -68,18 +86,13 @@ class ChatViewController: UITableViewController {
                 
                 cell.layoutIfNeeded()
                 
-                cell.readLabel.text = message.seen ? "✔️Read" : ""
+                cell.readLabel.text = message.displaySeen ? "✔️Read" : ""
                 
                 return cell
         })
         
 
-        viewModel.dataSource.asObservable().map {
-            _ in CGPoint(x: 0, y: 20.0) }
-            .bind(to: tableView.rx.contentOffset)
-            .disposed(by: disposeBag)
-
-        dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.none, reloadAnimation: UITableViewRowAnimation.none, deleteAnimation: UITableViewRowAnimation.none)
+        dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.none, reloadAnimation: UITableViewRowAnimation.automatic, deleteAnimation: UITableViewRowAnimation.none)
         
         viewModel.dataSource.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -94,6 +107,11 @@ class ChatViewController: UITableViewController {
         } else {
             return UIView()
         }
+    }
+    
+    @objc func switchUser() {
+        self.title = viewModel.firstUserIsActive ? "👩" : "👨"
+        viewModel.switchUser()
     }
     
 //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

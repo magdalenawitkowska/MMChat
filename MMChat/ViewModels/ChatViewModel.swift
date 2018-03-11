@@ -24,6 +24,9 @@ class ChatViewModel {
     var idCount = 1
     var dataSource = Variable<([Section])>([])
     var dateFormatter = DateFormatter()
+    var firstUserIsActive = true
+    var disposeBag = DisposeBag()
+    var lastSeenMessageId: Int?
     
     init() {
 //        let message1 = Message(text: "Hey Mario!", sentByMe: true, date: Date(), id: 0)
@@ -36,15 +39,26 @@ class ChatViewModel {
         dateFormatter.timeStyle = DateFormatter.Style.short
         
         dateFormatter.doesRelativeDateFormatting = true
+    
+    }
+    
+    func changeDisplaySeenStatusMessageOfId(id: Int, displaySeen: Bool) {
+        for i in (0 ... dataSource.value.count - 1).reversed() {
+            for j in (0 ... dataSource.value[i].items.count - 1).reversed() {
+                if dataSource.value[i].items[j].id == id {
+                    dataSource.value[i].items[j].displaySeen = displaySeen
+                }
+            }
+        }
     }
     
     
     func appendNewMessage(text: String) {
         idCount += 1
-        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount, seen: idCount % 2 == 0)
+        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount, seen: idCount % 2 == 0, displaySeen: false)
         let newSection = Section(header: dateFormatter.string(from: newMessage.date), items: [newMessage])
         if dataSource.value.count > 0 {
-            if var lastSection = dataSource.value.last, let lastMessage = lastSection.items.last {
+            if let lastMessage = getLastMessage() {
                 if Date().timeIntervalSince(lastMessage.date) < 20 * 60 * 60 {
                     dataSource.value[dataSource.value.count - 1].items.append(newMessage)
                     return
@@ -52,6 +66,34 @@ class ChatViewModel {
             }
         }
         dataSource.value.append(newSection)
+        
+        
+        var timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] timer in
+            self?.dataSource.value[0].items[(self?.dataSource.value[0].items.count)! - 1].seen = true
+            
+//            if let lastMessage = self?.getLastMessage() {
+//                if lastMessage.sentByMe {
+//                    self?.changeDisplaySeenStatusMessageOfId(id: lastMessage.id, displaySeen: true)
+//                }
+//            }
+        }
+    }
+    
+    func getLastMessage() -> Message? {
+         if let lastSection = dataSource.value.last, let lastMessage = lastSection.items.last {
+            return lastMessage
+        }
+        return nil
+    }
+    
+    func switchUser() {
+        firstUserIsActive = !firstUserIsActive
+        
+        for (sectionIndex, section) in dataSource.value.enumerated() {
+            for var (index, row) in section.items.enumerated() {
+                dataSource.value[sectionIndex].items[index].sentByMe = !row.sentByMe
+            }
+        }
     }
     
     func messageShouldHaveTail(indexPath: IndexPath) -> Bool {

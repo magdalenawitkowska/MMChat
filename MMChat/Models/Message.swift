@@ -16,6 +16,7 @@ struct Message: IdentifiableType, Equatable {
     var date: Date
     var id: Int
     var seen: Bool
+    var displaySeen: Bool
     
     typealias Identity = Int
     var identity : Identity { return id }
@@ -23,5 +24,5 @@ struct Message: IdentifiableType, Equatable {
 
 /// Function conforming to equatable protocol used to check if message object has changed
 func ==(lhs: Message, rhs: Message) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.id == rhs.id && lhs.sentByMe == rhs.sentByMe && lhs.seen == rhs.seen
 }
