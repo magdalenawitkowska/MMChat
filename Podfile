@@ -5,4 +5,7 @@ use_frameworks!
 target 'MMChat' do
   use_frameworks!
   pod 'InputBarAccessoryView'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'RxDataSources'
 end

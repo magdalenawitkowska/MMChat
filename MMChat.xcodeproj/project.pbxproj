@@ -18,6 +18,10 @@
 		227684B7205341B1000216BB /* TailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227684B6205341B1000216BB /* TailView.swift */; };
 		227D320F2054675E00C927A4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D320E2054675E00C927A4 /* ChatViewController.swift */; };
 		227D3211205475C000C927A4 /* MMChatColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D3210205475C000C927A4 /* MMChatColors.swift */; };
+		227D321420547BFB00C927A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321320547BFB00C927A4 /* Message.swift */; };
+		227D321720547C0F00C927A4 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321620547C0F00C927A4 /* ChatViewModel.swift */; };
+		227D321920547ECD00C927A4 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321820547ECD00C927A4 /* Section.swift */; };
+		227D321B2054852800C927A4 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D321A2054852800C927A4 /* MessageCell.swift */; };
 		9A39941E7E5F824DD74DAA1B /* Pods_MMChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2082ECA97FFA3AC68F83987C /* Pods_MMChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +52,10 @@
 		227684B6205341B1000216BB /* TailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TailView.swift; sourceTree = "<group>"; };
 		227D320E2054675E00C927A4 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		227D3210205475C000C927A4 /* MMChatColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMChatColors.swift; sourceTree = "<group>"; };
+		227D321320547BFB00C927A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		227D321620547C0F00C927A4 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		227D321820547ECD00C927A4 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		227D321A2054852800C927A4 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		8D72C8466C32D31FAA33EF81 /* Pods-MMChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BD99FED17BE77855A220397D /* Pods-MMChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MMChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-MMChat/Pods-MMChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,6 +111,9 @@
 		2276848D20532CCD000216BB /* MMChat */ = {
 			isa = PBXGroup;
 			children = (
+				227D321C2054858000C927A4 /* Views */,
+				227D321520547C0000C927A4 /* ViewModels */,
+				227D321220547BEB00C927A4 /* Models */,
 				227D320E2054675E00C927A4 /* ChatViewController.swift */,
 				227684B420533808000216BB /* Helpers */,
 				227684AE20532D4C000216BB /* Components */,
@@ -157,6 +168,31 @@
 				227684B6205341B1000216BB /* TailView.swift */,
 			);
 			path = TailView;
+			sourceTree = "<group>";
+		};
+		227D321220547BEB00C927A4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				227D321320547BFB00C927A4 /* Message.swift */,
+				227D321820547ECD00C927A4 /* Section.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		227D321520547C0000C927A4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				227D321620547C0F00C927A4 /* ChatViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		227D321C2054858000C927A4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				227D321A2054852800C927A4 /* MessageCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F14665F643014CF886BCAADB /* Frameworks */ = {
@@ -277,11 +313,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MMChat/Pods-MMChat-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/InputBarAccessoryView/InputBarAccessoryView.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputBarAccessoryView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -328,12 +372,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				227D321920547ECD00C927A4 /* Section.swift in Sources */,
 				227684B320532D8B000216BB /* BubbleView.swift in Sources */,
 				227D3211205475C000C927A4 /* MMChatColors.swift in Sources */,
+				227D321720547C0F00C927A4 /* ChatViewModel.swift in Sources */,
 				2276849120532CCD000216BB /* ViewController.swift in Sources */,
 				227684B7205341B1000216BB /* TailView.swift in Sources */,
 				227D320F2054675E00C927A4 /* ChatViewController.swift in Sources */,
 				2276848F20532CCD000216BB /* AppDelegate.swift in Sources */,
+				227D321B2054852800C927A4 /* MessageCell.swift in Sources */,
+				227D321420547BFB00C927A4 /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,8 +19,8 @@ class BubbleView: UIView {
     @IBOutlet weak var messageView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet var contentView: BubbleView!
-    @IBOutlet weak var messageLeftConstraint: NSLayoutConstraint!
-    @IBOutlet weak var messageRightConstraint: NSLayoutConstraint!
+    @IBOutlet var messageLeftConstraint: NSLayoutConstraint!
+    @IBOutlet var messageRightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var leftTailView: TailView!
     @IBOutlet weak var rightTailView: TailView!
@@ -42,7 +42,7 @@ class BubbleView: UIView {
         
     }
     
-    func configureBubbleView(text: String, backgroundColor: UIColor, textColor: UIColor, bubbleAlignment: BubbleAlignment) {
+    func configureBubbleView(text: String, backgroundColor: UIColor, textColor: UIColor, bubbleAlignment: BubbleAlignment, showTail: Bool) {
         messageLabel.text = text
         
         messageView.backgroundColor = backgroundColor
@@ -53,14 +53,14 @@ class BubbleView: UIView {
         
         messageLabel.textAlignment = bubbleAlignment == .Left ? NSTextAlignment.left : NSTextAlignment.right
         
-        rightTailView.isHidden = bubbleAlignment == .Left
-        leftTailView.isHidden = bubbleAlignment == .Right
+        rightTailView.isHidden = bubbleAlignment == .Left || !showTail
+        leftTailView.isHidden = bubbleAlignment == .Right || !showTail
         
         rightTailView.color = backgroundColor
         leftTailView.color = backgroundColor
         
         rightTailView.draw(rightTailView.frame)
-         leftTailView.draw(leftTailView.frame)
+        leftTailView.draw(leftTailView.frame)
         
         leftTailView.transform = CGAffineTransform(scaleX: -1, y: 1)
     }
