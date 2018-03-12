@@ -24,6 +24,7 @@ class ChatViewController: UITableViewController {
     
     var viewModel: ChatViewModel!
     var disposeBag: DisposeBag!
+    var indexPathOfAppendedCell: IndexPath?
     
     lazy var bar: InputBarAccessoryView = { [weak self] in
         let bar = InputBarAccessoryView()
@@ -32,7 +33,8 @@ class ChatViewController: UITableViewController {
         bar.sendButton.title = "SEND"
         bar.sendButton.tintColor = MMChatColors.textGray
         bar.separatorLine.isHidden = true
-        bar.inputTextView.font = UIFont(name: "AvenirNextMedium", size: 17.0)
+        
+        bar.inputTextView.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
         
         return bar
         }()
@@ -89,6 +91,10 @@ class ChatViewController: UITableViewController {
                 
                 cell.readLabel.text = message.displaySeen ? "✔️Read" : ""
                 
+                if let ip = self.indexPathOfAppendedCell, indexPath == ip {
+                    cell.contentView.alpha = 0.0
+                }
+                
                 return cell
         })
         
@@ -128,18 +134,24 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         
         viewModel.appendNewMessage(text: text)
+        
         inputBar.inputTextView.text = String()
         
         var lastSection = viewModel.dataSource.value.count - 1
         if var items = viewModel.dataSource.value[safe: lastSection] {
             var lastRow = items.items.count - 1
+            var indexPath = IndexPath(row: lastRow, section: lastSection)
+            indexPathOfAppendedCell = indexPath
+            var cell = self.tableView.cellForRow(at: indexPath)
+            cell?.contentView.alpha = 0.0
             
             DispatchQueue.main.async {
-                var indexPath = IndexPath(row: lastRow, section: lastSection)
-                var cell = self.tableView.cellForRow(at: indexPath)
                 
-                self.animateBubbleView(fromMessage: self.viewModel.flatMessageArray.array.last!, toCellPosition: cell!.frame, completion: {
-                    self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: false)
+                self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: false)
+                var cell = self.tableView.cellForRow(at: indexPath)
+                self.animateBubbleView(indexPath: indexPath, fromMessage: self.viewModel.flatMessageArray.array.last!, toCellPosition: cell!.frame, completion: {
+                    cell?.contentView.alpha = 1.0
+                    self.indexPathOfAppendedCell = nil
                 })
                 
             }
@@ -147,24 +159,27 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         }
     }
     
-    func animateBubbleView(fromMessage: Message, toCellPosition: CGRect, completion: @escaping () -> ()) {
-        
+    func animateBubbleView(indexPath: IndexPath, fromMessage: Message, toCellPosition: CGRect, completion: @escaping () -> ()) {
         var keyWindow = UIApplication.shared.keyWindow
         //var inputFrame = bar.convert(bar.inputTextView.frame, to: (view.window?.screen.fixedCoordinateSpace)!)
-        var redView = BubbleView(frame: bar.inputTextView.frame)
+        var redView = BubbleView(frame: bar.frame)
         
-        redView.configureBubbleView(text: fromMessage.text, backgroundColor: MMChatColors.raspberryRed, textColor: UIColor.white, bubbleAlignment: BubbleAlignment.Right, showTail: true)
-        //redView.backgroundColor = UIColor.red
+        redView.backgroundColor = UIColor.clear
         
-        //view.addSubview(redView)
+        redView.configureBubbleView(text: fromMessage.text, backgroundColor: MMChatColors.raspberryRed, textColor: UIColor.white, bubbleAlignment: BubbleAlignment.Right, showTail: viewModel.messageShouldHaveTail(indexPath: indexPath))
+        
+        redView.messageView.alpha = 0.0
+        var newFrame = tableView.convert(toCellPosition, to: bar)
         
         bar.addSubview(redView)
         bar.bringSubview(toFront: redView)
 
-        UIView.animate(withDuration: 10, animations: {
-        //    self.view.frame = toCellPosition
+        UIView.animate(withDuration: 0.6, animations: {
+            redView.frame = newFrame
+            redView.messageView.alpha = 1.0
         }) { completed in
             completion()
+            redView.removeFromSuperview()
         }
         
         
