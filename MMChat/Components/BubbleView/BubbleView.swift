@@ -28,6 +28,19 @@ class BubbleView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
+        configure()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        configure()
+        
+        messageView.backgroundColor = UIColor.blue
+        messageView.layer.cornerRadius = 10.0
+    }
+    
+    func configure() {
         Bundle.main.loadNibNamed("BubbleView", owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds

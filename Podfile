@@ -8,4 +8,5 @@ target 'MMChat' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
+  pod 'Bond'
 end

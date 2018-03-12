@@ -32,6 +32,7 @@ class ChatViewController: UITableViewController {
         bar.sendButton.title = "SEND"
         bar.sendButton.tintColor = MMChatColors.textGray
         bar.separatorLine.isHidden = true
+        bar.inputTextView.font = UIFont(name: "AvenirNextMedium", size: 17.0)
         
         return bar
         }()
@@ -73,7 +74,7 @@ class ChatViewController: UITableViewController {
     func setUpBindings() {
         tableView.dataSource = nil
         
-        let dataSource = RxTableViewSectionedAnimatedDataSource<Section>(
+        let dataSource = RxTableViewSectionedReloadDataSource<Section>(
             configureCell: { [unowned self] dataSource, tableView, indexPath, message in
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell") as! MessageCell
@@ -92,7 +93,7 @@ class ChatViewController: UITableViewController {
         })
         
 
-        dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.none, reloadAnimation: UITableViewRowAnimation.automatic, deleteAnimation: UITableViewRowAnimation.none)
+        //dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.automatic, reloadAnimation: UITableViewRowAnimation.automatic, deleteAnimation: UITableViewRowAnimation.automatic)
         
         viewModel.dataSource.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -134,9 +135,38 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             var lastRow = items.items.count - 1
             
             DispatchQueue.main.async {
-                self.tableView.scrollToRow(at: IndexPath(row: lastRow, section: lastSection), at: UITableViewScrollPosition.bottom, animated: false)
+                var indexPath = IndexPath(row: lastRow, section: lastSection)
+                var cell = self.tableView.cellForRow(at: indexPath)
+                
+                self.animateBubbleView(fromMessage: self.viewModel.flatMessageArray.array.last!, toCellPosition: cell!.frame, completion: {
+                    self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: false)
+                })
+                
             }
 
         }
+    }
+    
+    func animateBubbleView(fromMessage: Message, toCellPosition: CGRect, completion: @escaping () -> ()) {
+        
+        var keyWindow = UIApplication.shared.keyWindow
+        //var inputFrame = bar.convert(bar.inputTextView.frame, to: (view.window?.screen.fixedCoordinateSpace)!)
+        var redView = BubbleView(frame: bar.inputTextView.frame)
+        
+        redView.configureBubbleView(text: fromMessage.text, backgroundColor: MMChatColors.raspberryRed, textColor: UIColor.white, bubbleAlignment: BubbleAlignment.Right, showTail: true)
+        //redView.backgroundColor = UIColor.red
+        
+        //view.addSubview(redView)
+        
+        bar.addSubview(redView)
+        bar.bringSubview(toFront: redView)
+
+        UIView.animate(withDuration: 10, animations: {
+        //    self.view.frame = toCellPosition
+        }) { completed in
+            completion()
+        }
+        
+        
     }
 }

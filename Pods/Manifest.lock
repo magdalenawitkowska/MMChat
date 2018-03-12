@@ -1,6 +1,11 @@
 PODS:
+  - Bond (6.5.2):
+    - Differ (~> 1.0)
+    - ReactiveKit (~> 3.8)
+  - Differ (1.0.3)
   - Differentiator (3.0.2)
   - InputBarAccessoryView (1.4.4)
+  - ReactiveKit (3.8.2)
   - RxCocoa (4.1.0):
     - RxSwift (~> 4.0)
   - RxDataSources (3.0.2):
@@ -10,18 +15,22 @@ PODS:
   - RxSwift (4.1.0)
 
 DEPENDENCIES:
+  - Bond
   - InputBarAccessoryView
   - RxCocoa
   - RxDataSources
   - RxSwift
 
 SPEC CHECKSUMS:
+  Bond: 2b8c1070674fe8ba908ae11dc4e7607377d17bab
+  Differ: 0c220ac75542f5f17f91b1303b85bf07d871ecd7
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   InputBarAccessoryView: e23d856ae50163e84a7a7cee0ce53733321e5e65
+  ReactiveKit: d2fe54503e0b6d0fa48b2cc6e0b0f99869f13ee6
   RxCocoa: cc1fec49cdc8fabe645964de7c51c099a36c2aa8
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
   RxSwift: 4219941c1244c88002901bd87a69d3aea9ae71f0
 
-PODFILE CHECKSUM: 789ae73eb049ab888db70e1e39d027ff37b9e427
+PODFILE CHECKSUM: 97bce918bdb1897d9838b89ec7aac72ee150395d
 
 COCOAPODS: 1.4.0

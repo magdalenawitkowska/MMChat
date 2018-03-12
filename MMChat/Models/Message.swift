@@ -24,5 +24,5 @@ struct Message: IdentifiableType, Equatable {
 
 /// Function conforming to equatable protocol used to check if message object has changed
 func ==(lhs: Message, rhs: Message) -> Bool {
-    return lhs.id == rhs.id && lhs.sentByMe == rhs.sentByMe && lhs.seen == rhs.seen
+    return lhs.id == rhs.id && lhs.sentByMe == rhs.sentByMe && lhs.displaySeen == rhs.displaySeen
 }

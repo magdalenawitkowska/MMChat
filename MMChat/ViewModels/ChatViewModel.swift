@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxDataSources
+import Bond
 
 extension Collection {
     
@@ -21,12 +22,14 @@ extension Collection {
 
 class ChatViewModel {
     
-    var idCount = 1
+    var idCount = 0
     var dataSource = Variable<([Section])>([])
     var dateFormatter = DateFormatter()
     var firstUserIsActive = true
     var disposeBag = DisposeBag()
-    var lastSeenMessageId: Int?
+    var lastSeenMessageId = -1
+    
+    var flatMessageArray = MutableObservableArray<Message>()
     
     init() {
 //        let message1 = Message(text: "Hey Mario!", sentByMe: true, date: Date(), id: 0)
@@ -39,13 +42,77 @@ class ChatViewModel {
         dateFormatter.timeStyle = DateFormatter.Style.short
         
         dateFormatter.doesRelativeDateFormatting = true
+
+
+        flatMessageArray.observeNext { [unowned self] event in
+            
+            switch event.change {
+            case .inserts(let indices):
+                for index in indices {
+                    let newMessage = self.flatMessageArray[index]
+                    self.appendNewMessageToDataSource(newMessage: newMessage)
+                    
+                    self.changeDisplaySeenStatusMessageOfId(id: self.lastSeenMessageId, displaySeen: false)
+                    self.lastSeenMessageId = -1
+
+                }
+            case .updates(let indices):
+                print(indices)
+                for index in indices {
+                    var updatedMessage = self.flatMessageArray[index]
+                    
+                    if updatedMessage.seen == true && updatedMessage.sentByMe && index == self.flatMessageArray.count - 1 {
+                        
+                        print("Zmieniam seen na false: \(self.lastSeenMessageId)")
+                        print("Zmieniam seen na true: \(updatedMessage.id)")
+
+                        self.changeDisplaySeenStatusMessageOfId(id: self.lastSeenMessageId, displaySeen: false)
+                        updatedMessage.displaySeen = true
+                        self.lastSeenMessageId = updatedMessage.id
+                    }
+                    
+                    
+                    
+                    self.changeMessage(updatedMessage: updatedMessage)
+                }
+                
+            default:
+                print("hej!")
+            }
+            
+        }
+
     
+    }
+    
+    func appendNewMessageToDataSource(newMessage: Message) {
+        let newSection = Section(header: self.dateFormatter.string(from: newMessage.date), items: [newMessage])
+        if self.dataSource.value.count > 0 {
+            if let lastMessage = self.getLastMessage() {
+                if Date().timeIntervalSince(lastMessage.date) < 20 * 60 * 60 {
+                    self.dataSource.value[self.dataSource.value.count - 1].items.append(newMessage)
+                    return
+                }
+            }
+        }
+        self.dataSource.value.append(newSection)
+    }
+    
+    func changeMessage(updatedMessage: Message) {
+        for i in (0 ... dataSource.value.count - 1).reversed() {
+            for j in (0 ... dataSource.value[i].items.count - 1).reversed() {
+                if dataSource.value[i].items[j].id == updatedMessage.id {
+                    dataSource.value[i].items[j] = updatedMessage
+                }
+            }
+        }
     }
     
     func changeDisplaySeenStatusMessageOfId(id: Int, displaySeen: Bool) {
         for i in (0 ... dataSource.value.count - 1).reversed() {
             for j in (0 ... dataSource.value[i].items.count - 1).reversed() {
                 if dataSource.value[i].items[j].id == id {
+                    print("Found! \(i) \(j)")
                     dataSource.value[i].items[j].displaySeen = displaySeen
                 }
             }
@@ -54,28 +121,16 @@ class ChatViewModel {
     
     
     func appendNewMessage(text: String) {
+    
         idCount += 1
-        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount, seen: idCount % 2 == 0, displaySeen: false)
-        let newSection = Section(header: dateFormatter.string(from: newMessage.date), items: [newMessage])
-        if dataSource.value.count > 0 {
-            if let lastMessage = getLastMessage() {
-                if Date().timeIntervalSince(lastMessage.date) < 20 * 60 * 60 {
-                    dataSource.value[dataSource.value.count - 1].items.append(newMessage)
-                    return
-                }
-            }
-        }
-        dataSource.value.append(newSection)
+        let newMessage = Message(text: text, sentByMe: true, date: Date(), id: idCount, seen: false, displaySeen: false)
         
+        flatMessageArray.append(newMessage)
+        let index = flatMessageArray.count - 1
         
-        var timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] timer in
-            self?.dataSource.value[0].items[(self?.dataSource.value[0].items.count)! - 1].seen = true
+        let timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] timer in
+            self?.flatMessageArray[index].seen = true
             
-//            if let lastMessage = self?.getLastMessage() {
-//                if lastMessage.sentByMe {
-//                    self?.changeDisplaySeenStatusMessageOfId(id: lastMessage.id, displaySeen: true)
-//                }
-//            }
         }
     }
     
@@ -101,7 +156,6 @@ class ChatViewModel {
         if let messages = dataSource.value[safe: section], let message = messages.items[safe: indexPath.row], let prevMessage = messages.items[safe: indexPath.row - 1] {
             
             if message.date.timeIntervalSince(prevMessage.date) < 20.0 && message.sentByMe == prevMessage.sentByMe {
-                print(message.date.timeIntervalSince(prevMessage.date))
                 return false
             }
         }

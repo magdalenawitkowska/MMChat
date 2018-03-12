@@ -15,7 +15,7 @@ struct Section {
     var items: [Item]
 }
 
-extension Section: AnimatableSectionModelType {
+extension Section: SectionModelType {
     
     typealias Item = Message
     
