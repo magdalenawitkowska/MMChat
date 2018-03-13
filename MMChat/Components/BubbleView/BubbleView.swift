@@ -75,7 +75,6 @@ class BubbleView: UIView {
         rightTailView.setNeedsDisplay()
         leftTailView.setNeedsDisplay()
         
-        
         leftTailView.transform = CGAffineTransform(scaleX: -1, y: 1)
     }
     

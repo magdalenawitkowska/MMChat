@@ -13,18 +13,13 @@ import RxDataSources
 import RxSwift
 import RxCocoa
 
-extension UIApplication {
-    var statusBarView: UIView? {
-        return value(forKey: "statusBar") as? UIView
-    }
-}
-
 
 class ChatViewController: UITableViewController {
     
     var viewModel: ChatViewModel!
     var disposeBag: DisposeBag!
     var indexPathOfAppendedCell: IndexPath?
+    
     
     lazy var bar: InputBarAccessoryView = { [weak self] in
         let bar = InputBarAccessoryView()
@@ -53,24 +48,29 @@ class ChatViewController: UITableViewController {
         viewModel = ChatViewModel()
         disposeBag = DisposeBag()
         
+        setTableView()
+        setNavigationBar()
+        setUpBindings()
+
+    }
+    
+    func setNavigationBar() {
+        self.title = "👩"
+        self.tableView.scrollsToTop = false
+        
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        UIApplication.shared.statusBarView?.backgroundColor = .white
+        (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .white
+    }
+    
+    func setTableView() {
         
         let nib = UINib(nibName: "HeaderView", bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
         
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 88.0
-        
-        self.tableView.scrollsToTop = false
-        
-        setUpBindings()
-        
-        self.title = "👩"
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "🔄", style: UIBarButtonItemStyle.plain, target: self, action: #selector(switchUser))
     }
     
     func setUpBindings() {
@@ -90,20 +90,27 @@ class ChatViewController: UITableViewController {
                 cell.layoutIfNeeded()
                 
                 cell.readLabel.text = message.displaySeen ? "✔️Read" : ""
-                
                 if let ip = self.indexPathOfAppendedCell, indexPath == ip {
                     cell.contentView.alpha = 0.0
+                } else {
+                    cell.contentView.alpha = 1.0
                 }
-                
                 return cell
         })
         
-
-        //dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: UITableViewRowAnimation.automatic, reloadAnimation: UITableViewRowAnimation.automatic, deleteAnimation: UITableViewRowAnimation.automatic)
-        
         viewModel.dataSource.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
-        
+
+        viewModel.dataSource.asObservable().subscribe({ x in
+            DispatchQueue.main.async {
+                let lastSection = self.viewModel.dataSource.value.count - 1
+                if let items = self.viewModel.dataSource.value[safe: lastSection] {
+                    let lastRow = items.items.count - 1
+                    let indexPath = IndexPath(row: lastRow, section: lastSection)
+                    self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: false)
+                }
+            }
+        }).disposed(by: disposeBag)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -115,18 +122,7 @@ class ChatViewController: UITableViewController {
             return UIView()
         }
     }
-    
-    @objc func switchUser() {
-        self.title = viewModel.firstUserIsActive ? "👩" : "👨"
-        viewModel.switchUser()
-    }
-    
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
-    
 }
-
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
     
@@ -134,37 +130,28 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         
         viewModel.appendNewMessage(text: text)
-        
         inputBar.inputTextView.text = String()
         
-        var lastSection = viewModel.dataSource.value.count - 1
-        if var items = viewModel.dataSource.value[safe: lastSection] {
-            var lastRow = items.items.count - 1
-            var indexPath = IndexPath(row: lastRow, section: lastSection)
+        let lastSection = viewModel.dataSource.value.count - 1
+        if let items = viewModel.dataSource.value[safe: lastSection] {
+            let lastRow = items.items.count - 1
+            let indexPath = IndexPath(row: lastRow, section: lastSection)
             indexPathOfAppendedCell = indexPath
-            var cell = self.tableView.cellForRow(at: indexPath)
-            cell?.contentView.alpha = 0.0
             
             DispatchQueue.main.async {
-                
-                self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: false)
-                var cell = self.tableView.cellForRow(at: indexPath)
-                self.animateBubbleView(indexPath: indexPath, fromMessage: self.viewModel.flatMessageArray.array.last!, toCellPosition: cell!.frame, completion: {
-                    cell?.contentView.alpha = 1.0
-                    self.indexPathOfAppendedCell = nil
-                })
-                
+                if let cell = self.tableView.cellForRow(at: indexPath) {
+                    self.animateBubbleView(indexPath: indexPath, fromMessage: self.viewModel.flatMessageArray.array.last!, toCellPosition: cell.frame, completion: {
+                        cell.contentView.alpha = 1.0
+                        self.indexPathOfAppendedCell = nil
+                    })
+                }
             }
-
         }
     }
     
     func animateBubbleView(indexPath: IndexPath, fromMessage: Message, toCellPosition: CGRect, completion: @escaping () -> ()) {
         var keyWindow = UIApplication.shared.keyWindow
-        //var inputFrame = bar.convert(bar.inputTextView.frame, to: (view.window?.screen.fixedCoordinateSpace)!)
         var redView = BubbleView(frame: bar.frame)
-        
-        redView.backgroundColor = UIColor.clear
         
         redView.configureBubbleView(text: fromMessage.text, backgroundColor: MMChatColors.raspberryRed, textColor: UIColor.white, bubbleAlignment: BubbleAlignment.Right, showTail: viewModel.messageShouldHaveTail(indexPath: indexPath))
         
@@ -181,7 +168,5 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             completion()
             redView.removeFromSuperview()
         }
-        
-        
     }
 }
