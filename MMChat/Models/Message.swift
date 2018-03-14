@@ -16,6 +16,8 @@ struct Message: IdentifiableType, Equatable {
     var date: Date
     var id: Int
     var seen: Bool
+    
+    // For displaying purpose
     var displaySeen: Bool
     
     typealias Identity = Int

@@ -20,7 +20,6 @@ class ChatViewController: UITableViewController {
     var disposeBag: DisposeBag!
     var indexPathOfAppendedCell: IndexPath?
     
-    
     lazy var bar: InputBarAccessoryView = { [weak self] in
         let bar = InputBarAccessoryView()
         bar.delegate = self
@@ -32,7 +31,7 @@ class ChatViewController: UITableViewController {
         bar.inputTextView.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
         
         return bar
-        }()
+    }()
     
     override var inputAccessoryView: UIView? {
         return bar
@@ -65,7 +64,6 @@ class ChatViewController: UITableViewController {
     }
     
     func setTableView() {
-        
         let nib = UINib(nibName: "HeaderView", bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
         
@@ -128,7 +126,6 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     
     // MARK: - InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        
         viewModel.appendNewMessage(text: text)
         inputBar.inputTextView.text = String()
         
@@ -150,13 +147,12 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     }
     
     func animateBubbleView(indexPath: IndexPath, fromMessage: Message, toCellPosition: CGRect, completion: @escaping () -> ()) {
-        var keyWindow = UIApplication.shared.keyWindow
-        var redView = BubbleView(frame: bar.frame)
+        let redView = BubbleView(frame: bar.frame)
         
         redView.configureBubbleView(text: fromMessage.text, backgroundColor: MMChatColors.raspberryRed, textColor: UIColor.white, bubbleAlignment: BubbleAlignment.Right, showTail: viewModel.messageShouldHaveTail(indexPath: indexPath))
         
         redView.messageView.alpha = 0.0
-        var newFrame = tableView.convert(toCellPosition, to: bar)
+        let newFrame = tableView.convert(toCellPosition, to: bar)
         
         bar.addSubview(redView)
         bar.bringSubview(toFront: redView)

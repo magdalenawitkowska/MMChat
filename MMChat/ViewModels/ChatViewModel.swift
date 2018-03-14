@@ -14,10 +14,10 @@ import Bond
 
 class ChatViewModel {
     
-    let newSectionTimeInterval = 20.0 * 60 * 60
-    let showTailTimeInterval = 20.0
+    let newSectionTimeInterval = 20.0 * 60 * 60 //1 hour in seconds
+    let showTailTimeInterval = 20.0 // 20 seconds
     
-    var idCount = 0
+    var idCount = 0 //Simulates identifiers of messages (which would come from server)
     var dataSource = Variable<([Section])>([])
     var dateFormatter = DateFormatter()
     var disposeBag = DisposeBag()
@@ -97,7 +97,6 @@ class ChatViewModel {
             }
         }
     }
-    
     
     /// Apply display seen status change to data Source
     ///
